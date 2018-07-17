@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kuna: тикеры и виджеты</string>
+    <string name="action_settings">Настройки</string>
+    <string name="appwidget_text">ПРИМЕР</string>
+    <string name="configure">Конфигурирование</string>
+    <string name="add_widget">Добавить виджет</string>
+    <string name="apply_widget">применить</string>
+    <string name="title_activity_detail">Подробности</string>
+    <string name="tab_buy">Покупка</string>
+    <string name="tab_sell">Продажа</string>
+    <string name="tab_trades">Торги</string>
+    <string name="market_last_price">цена последней сделки</string>
+    <string name="about_subtitle">реализация API торговой платформы \"Kuna Exchange\"</string>
+    <string name="about_agreement">Программа поставляется как есть. Никакая гарантия любого вида не предоставляется и не подразумевается.\n\nВы используете это программное обеспечение на свой собственный риск.\n\nАвтор не будет нести никакой ответственности за потерю данных, убытки, упущенные выгоды или любой другой вид потерь при использовании этого программного обеспечения.\n\nВ то же время Автор гарантирует, что при разработке программы им не были и не будут использованы какие-либо части программного кода, несущие деструктивные действия или собирающие информацию о пользователе без его ведома.</string>
+    <string name="about">О программе</string>
+</resources>

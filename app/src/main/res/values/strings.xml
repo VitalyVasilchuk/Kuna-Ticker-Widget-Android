@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Kuna"'"s Tickers &amp; Widgets</string>
+    <string name="action_settings">Settings</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
+    <string name="apply_widget">apply</string>
+    <string name="title_activity_detail">Detail</string>
+    <string name="tab_buy">BUY</string>
+    <string name="tab_sell">SELL</string>
+    <string name="tab_trades">TRADES</string>
+    <string name="market_last_price">last transaction price</string>
+    <string name="about_subtitle">implementation of API trading platform \"Kuna Exchange\"</string>
+    <string name="about_agreement">The program is delivered as is. No warranty of any kind is provided or implied. \n\nYou use this software at your own risk. \n\nThe author will not be liable for loss of data, loss, lost profits or any other type of loss when using this software .\n\nAt the same time, the Author guarantees that during the development of the program they did not and will not use any parts of the program code carrying destructive actions or collecting information about the user without his knowledge.</string>
+    <string name="about">About</string>
+</resources>

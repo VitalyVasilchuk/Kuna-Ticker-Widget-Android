@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/widget_shape"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/image_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="false"
+        android:src="@drawable/icon_coin_kun" />
+
+    <LinearLayout
+        android:id="@+id/layout_price"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_bid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:textColor="@color/primary_text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="0.12345678" />
+
+        <TextView
+            android:id="@+id/text_ask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:textColor="@color/primary_text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="0.12345678" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_date_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/image_update"
+        android:layout_alignLeft="@+id/image_icon"
+        android:layout_alignStart="@+id/image_icon"
+        android:textColor="@color/secondary_text"
+        android:textSize="10sp"
+        tools:text="02.07.2018 20:08" />
+
+    <ImageView
+        android:id="@+id/image_update"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/layout_price"
+        android:layout_marginTop="4dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_action_update"
+        android:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignEnd="@+id/layout_price"
+        android:layout_alignRight="@+id/layout_price"
+        android:layout_below="@+id/layout_price"
+        android:layout_marginTop="4dp"
+        android:visibility="invisible" />
+
+</RelativeLayout>
