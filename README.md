@@ -10,4 +10,7 @@
 <li>AppWidgetProvider для реализация виджетов, настраиваемых и обновляемых по запросу и расписанию (AlarmManager);
 </ul>
 
-<a href='https://play.google.com/store/apps/details?id=apps.basilisk.kunatickerwidget&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png'/></a>
+<a href="https://play.google.com/store/apps/details?id=https://play.google.com/store/apps/details?id=apps.basilisk.kunatickerwidget">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+</a>
