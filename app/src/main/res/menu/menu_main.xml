@@ -3,14 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="apps.basilisk.kunatickerwidget.activity.MainActivity">
     <item
+        android:id="@+id/action_accounts"
+        android:icon="@drawable/ic_account_balance"
+        android:orderInCategory="101"
+        android:title="@string/title_activity_user_info"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        android:visible="false"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_about"
-        android:orderInCategory="101"
+        android:orderInCategory="102"
         android:title="@string/about"
         app:showAsAction="never" />
 </menu>

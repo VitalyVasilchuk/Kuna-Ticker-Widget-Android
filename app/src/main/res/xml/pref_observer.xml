@@ -1,0 +1,33 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:enabled="false"
+        android:key="switch_observer"
+        android:summary="@string/switch_observer_summary"
+        android:title="@string/switch_observer" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="switch_observer"
+        android:key="switch_observer_price"
+        android:summary="@string/switch_observer_price_summary"
+        android:title="@string/switch_observer_price" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="switch_observer"
+        android:enabled="true"
+        android:key="switch_observer_order"
+        android:summary="@string/switch_observer_order_summary"
+        android:title="@string/switch_observer_order" />
+
+    <ListPreference
+        android:defaultValue="15"
+        android:dependency="switch_observer"
+        android:entries="@array/observer_frequency"
+        android:entryValues="@array/observer_frequency_values"
+        android:key="observer_frequency"
+        android:title="@string/observer_launch_frequency" />
+
+</PreferenceScreen>

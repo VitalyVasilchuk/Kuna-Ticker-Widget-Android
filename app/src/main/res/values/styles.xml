@@ -17,4 +17,26 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="pin_button">
+        <item name="android:background">@drawable/pin_button</item>
+        <item name="android:textColor">@color/icons</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:layout_gravity">fill</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:layout_width">80dp</item>
+    </style>
+
+    <style name="pin_asterisk">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:src">@drawable/ic_asterisk</item>
+    </style>
+
+    <style name="SwitchCompat">
+        <item name="thumbTint">@color/switch_compat_thumb</item>
+        <item name="trackTint">@color/switch_compat_track</item>
+    </style>
+
 </resources>

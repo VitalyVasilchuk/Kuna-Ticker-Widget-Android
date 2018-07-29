@@ -2,6 +2,7 @@ package apps.basilisk.kunatickerwidget.widget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -9,25 +10,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.TimeUnit;
 
 import apps.basilisk.kunatickerwidget.BuildConfig;
-import apps.basilisk.kunatickerwidget.CoinCatalog;
-import apps.basilisk.kunatickerwidget.LoaderData;
+import apps.basilisk.kunatickerwidget.tools.CoinCatalog;
+import apps.basilisk.kunatickerwidget.tools.LoaderData;
 import apps.basilisk.kunatickerwidget.R;
 import apps.basilisk.kunatickerwidget.activity.DetailActivity;
 import apps.basilisk.kunatickerwidget.database.DatabaseAdapter;
 import apps.basilisk.kunatickerwidget.entity.Ticker;
 
-//import android.text.format.DateFormat;
 
 /**
  * Implementation of App Widget functionality.
@@ -75,12 +75,10 @@ public class TickerAppWidget extends AppWidgetProvider {
 
             // update on click icon
             Intent intentUpdate = new Intent(context, TickerAppWidget.class);
-            //intentUpdate.setAction(UPDATE_ONE_WIDGET);
             intentUpdate.setAction(RELOAD_ALL_WIDGETS);
             intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             PendingIntent pendingIntentUpdate = PendingIntent.getBroadcast(context, appWidgetId, intentUpdate, 0);
             views.setOnClickPendingIntent(R.id.image_update, pendingIntentUpdate);
-            //views.setOnClickPendingIntent(R.id.image_touch_point, pendingIntentUpdate);
 
             // переход на детализирующую активити
             HashMap<String, Object> mapDetail = new HashMap();
@@ -93,13 +91,28 @@ public class TickerAppWidget extends AppWidgetProvider {
             mapDetail.put("high", ticker.getHigh());
             mapDetail.put("vol", ticker.getVol());
             mapDetail.put("last", ticker.getLast());
+            mapDetail.put("currencyTrade", ticker.getCurrencyTrade());
+            mapDetail.put("currencyBase", ticker.getCurrencyBase());
+
+            // активити и ее параметры
             Intent intentDetail = new Intent(context, DetailActivity.class);
             intentDetail.putExtra("EXTRA_DATA", mapDetail);
 
+            // формирование стека вызова
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(DetailActivity.class);
+            stackBuilder.addNextIntent(intentDetail);
+
+            PendingIntent stackPendingIntent =
+                    stackBuilder.getPendingIntent(appWidgetId, PendingIntent.FLAG_UPDATE_CURRENT);
+
+/*
             PendingIntent pendingIntentActivity = PendingIntent.getActivity(context, appWidgetId,
                     intentDetail, PendingIntent.FLAG_UPDATE_CURRENT);
+*/
 
-            views.setOnClickPendingIntent(R.id.widget_container, pendingIntentActivity);
+            views.setOnClickPendingIntent(R.id.text_bid, stackPendingIntent/*pendingIntentActivity*/);
+            views.setOnClickPendingIntent(R.id.text_ask, stackPendingIntent/*pendingIntentActivity*/);
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -186,12 +199,15 @@ public class TickerAppWidget extends AppWidgetProvider {
                 loaderData.addObserver(new Observer() {
                     @Override
                     public void update(Observable observable, Object o) {
-                        if (o instanceof Map || o == null) {
-                            Intent intent = new Intent(context, TickerAppWidget.class);
-                            intent.setAction(UPDATE_ALL_WIDGETS);
-                            context.sendBroadcast(intent);
+                        if (o instanceof Pair) {
+                            String keyName = (String) ((Pair) o).first;
+                            if (keyName.equals("RESULT_TICKERS") || keyName.equals("ERROR_TICKERS")) {
+                                Intent intent = new Intent(context, TickerAppWidget.class);
+                                intent.setAction(UPDATE_ALL_WIDGETS);
+                                context.sendBroadcast(intent);
 
-                            observable.deleteObserver(this);
+                                observable.deleteObserver(this);
+                            }
                         }
                     }
                 });

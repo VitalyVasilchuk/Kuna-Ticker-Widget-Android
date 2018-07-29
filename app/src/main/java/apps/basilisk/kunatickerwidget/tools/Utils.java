@@ -1,23 +1,11 @@
-package apps.basilisk.kunatickerwidget;
+package apps.basilisk.kunatickerwidget.tools;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class DateParser {
-    /*
-        Values tested :
-        "2007-05-01T15:43:26+07:00"
-        "2007-05-01T15:43:26.3+07:00"
-        "2007-05-01T15:43:26.3452+07:00"
-        "2007-05-01T15:43:26-07:00"
-        "2007-05-01T15:43:26.3-07:00"
-        "2007-05-01T15:43:26.3452-07:00"
-        "2007-05-01T15:43:26.3452Z"
-        "2007-05-01T15:43:26.3Z"
-        "2007-05-01T15:43:26Z"
-     */
+public class Utils {
 
     public synchronized static Date parseRFC3339Date(String dateString) throws java.text.ParseException, IndexOutOfBoundsException {
         Date d;
@@ -61,4 +49,11 @@ public class DateParser {
         }
         return d;
     }
+
+    public static String getFormattedValue(String s) {
+        s.replace(",", ".");
+        if (!s.contains(".")) s += ".";
+        return (s + "0000000000").substring(0, 10);
+    }
+
 }

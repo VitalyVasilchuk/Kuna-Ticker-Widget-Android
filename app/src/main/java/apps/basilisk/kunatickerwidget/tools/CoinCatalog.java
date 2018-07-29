@@ -1,6 +1,8 @@
-package apps.basilisk.kunatickerwidget;
+package apps.basilisk.kunatickerwidget.tools;
 
 import java.util.ArrayList;
+
+import apps.basilisk.kunatickerwidget.R;
 
 public class CoinCatalog {
     private ArrayList<Coin> listCoins;
@@ -8,6 +10,7 @@ public class CoinCatalog {
 
     private CoinCatalog() {
         listCoins = new ArrayList<>();
+        listCoins.add(new Coin("uah", "Hryvnia", R.drawable.icon_coin_uah));
         listCoins.add(new Coin("ada", "Cardano", R.drawable.icon_coin_ada));
         listCoins.add(new Coin("arn", "AERON", R.drawable.icon_coin_arn));
         listCoins.add(new Coin("bch", "BITCOIN-CASH", R.drawable.icon_coin_bch));

@@ -37,6 +37,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="bottom"
             android:textAlignment="center"
+            android:textColor="@color/secondary_text"
             android:textSize="12sp"
             tools:text="etc/uah" />
 
@@ -75,6 +76,7 @@
                     android:layout_weight="1"
                     android:gravity="bottom"
                     android:text="bid"
+                    android:textColor="@color/secondary_text"
                     android:textSize="10sp" />
 
                 <TextView
@@ -83,6 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:textColor="@color/secondary_text"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="123456.789" />
@@ -108,6 +111,7 @@
                     android:layout_weight="1"
                     android:gravity="bottom"
                     android:text="ask"
+                    android:textColor="@color/secondary_text"
                     android:textSize="10sp" />
 
                 <TextView
@@ -116,6 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:textColor="@color/secondary_text"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="168890.0" />
@@ -149,6 +154,7 @@
                     android:layout_weight="1"
                     android:gravity="bottom"
                     android:text="24h Low"
+                    android:textColor="@color/secondary_text"
                     android:textSize="10sp" />
 
                 <TextView
@@ -157,6 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:textColor="@color/secondary_text"
                     android:textSize="12sp"
                     tools:text="164450.0" />
             </LinearLayout>
@@ -181,6 +188,7 @@
                     android:layout_weight="1"
                     android:gravity="bottom"
                     android:text="24h High"
+                    android:textColor="@color/secondary_text"
                     android:textSize="10sp" />
 
                 <TextView
@@ -189,6 +197,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:textColor="@color/secondary_text"
                     android:textSize="12sp"
                     tools:text="170100.0" />
             </LinearLayout>
@@ -213,6 +222,7 @@
                     android:layout_weight="1"
                     android:gravity="bottom"
                     android:text="24h Volume"
+                    android:textColor="@color/secondary_text"
                     android:textSize="10sp" />
 
                 <TextView
@@ -221,6 +231,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:textColor="@color/secondary_text"
                     android:textSize="12sp"
                     tools:text="32.159837" />
             </LinearLayout>
