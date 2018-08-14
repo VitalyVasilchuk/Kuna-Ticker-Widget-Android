@@ -2,7 +2,6 @@ package apps.basilisk.kunatickerwidget.widget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -21,12 +20,12 @@ import java.util.Observer;
 import java.util.concurrent.TimeUnit;
 
 import apps.basilisk.kunatickerwidget.BuildConfig;
-import apps.basilisk.kunatickerwidget.tools.CoinCatalog;
-import apps.basilisk.kunatickerwidget.tools.LoaderData;
 import apps.basilisk.kunatickerwidget.R;
-import apps.basilisk.kunatickerwidget.activity.DetailActivity;
+import apps.basilisk.kunatickerwidget.activity.MainActivity;
 import apps.basilisk.kunatickerwidget.database.DatabaseAdapter;
 import apps.basilisk.kunatickerwidget.entity.Ticker;
+import apps.basilisk.kunatickerwidget.tools.CoinCatalog;
+import apps.basilisk.kunatickerwidget.tools.LoaderData;
 
 
 /**
@@ -95,9 +94,14 @@ public class TickerAppWidget extends AppWidgetProvider {
             mapDetail.put("currencyBase", ticker.getCurrencyBase());
 
             // активити и ее параметры
-            Intent intentDetail = new Intent(context, DetailActivity.class);
-            intentDetail.putExtra("EXTRA_DATA", mapDetail);
+            Intent intentDetail = new Intent(context, MainActivity.class);
+            //intentDetail.putExtra("EXTRA_DATA", mapDetail);
+            PendingIntent activityPendingIntent = PendingIntent.getActivity(context, appWidgetId,
+                    intentDetail, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setOnClickPendingIntent(R.id.text_bid, activityPendingIntent);
+            views.setOnClickPendingIntent(R.id.text_ask, activityPendingIntent);
 
+/*
             // формирование стека вызова
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
             stackBuilder.addParentStack(DetailActivity.class);
@@ -106,13 +110,9 @@ public class TickerAppWidget extends AppWidgetProvider {
             PendingIntent stackPendingIntent =
                     stackBuilder.getPendingIntent(appWidgetId, PendingIntent.FLAG_UPDATE_CURRENT);
 
-/*
-            PendingIntent pendingIntentActivity = PendingIntent.getActivity(context, appWidgetId,
-                    intentDetail, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setOnClickPendingIntent(R.id.text_bid, stackPendingIntent);
+            views.setOnClickPendingIntent(R.id.text_ask, stackPendingIntent);
 */
-
-            views.setOnClickPendingIntent(R.id.text_bid, stackPendingIntent/*pendingIntentActivity*/);
-            views.setOnClickPendingIntent(R.id.text_ask, stackPendingIntent/*pendingIntentActivity*/);
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);
