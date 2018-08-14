@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,20 +29,33 @@ import java.util.Observable;
 import java.util.Observer;
 
 import apps.basilisk.kunatickerwidget.BuildConfig;
-import apps.basilisk.kunatickerwidget.tools.CoinCatalog;
-import apps.basilisk.kunatickerwidget.tools.LoaderData;
 import apps.basilisk.kunatickerwidget.R;
 import apps.basilisk.kunatickerwidget.Session;
+import apps.basilisk.kunatickerwidget.billing.BillingManager;
+import apps.basilisk.kunatickerwidget.billing.BillingProvider;
+import apps.basilisk.kunatickerwidget.billing.MainViewController;
+import apps.basilisk.kunatickerwidget.billing.skulist.AcquireFragment;
 import apps.basilisk.kunatickerwidget.database.DatabaseAdapter;
 import apps.basilisk.kunatickerwidget.entity.Ticker;
+import apps.basilisk.kunatickerwidget.tools.CoinCatalog;
+import apps.basilisk.kunatickerwidget.tools.LoaderData;
 import apps.basilisk.kunatickerwidget.widget.TickerAppWidget;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, Observer {
+import static com.android.billingclient.api.BillingClient.BillingResponse;
+import static apps.basilisk.kunatickerwidget.billing.BillingManager.BILLING_MANAGER_NOT_INITIALIZED;
+
+public class MainActivity extends AppCompatActivity implements
+        SwipeRefreshLayout.OnRefreshListener, Observer, BillingProvider {
     private static final String TAG = "MainActivity";
+    private static final String DIALOG_TAG_ACQUIRE = "DIALOG_TAG_ACQUIRE";
     private ArrayList<HashMap<String, Object>> listTickers;
     private ListView listView;
     private LoaderData loaderData;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private BillingManager mBillingManager;
+    private AcquireFragment mAcquireFragment;
+    private MainViewController mViewController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         int item_ticker_layout = (switchPriceUsd) ? R.layout.item_ticker_usd : R.layout.item_ticker;
         ListAdapter simpleAdapter = new SimpleAdapter(this, listTickers, item_ticker_layout,
-                new String[]{"icon_res", "title", "market", "bid", "ask",  "bid_usd", "ask_usd", "low", "high", "vol"},
+                new String[]{"icon_res", "title", "market", "bid", "ask", "bid_usd", "ask_usd", "low", "high", "vol"},
                 new int[]{R.id.image_icon, R.id.text_title, R.id.text_market,
                         R.id.text_bid, R.id.text_ask, R.id.text_bid_usd, R.id.text_ask_usd,
                         R.id.text_low, R.id.text_high, R.id.text_volume});
@@ -91,21 +106,49 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefreshLayout.setRefreshing(true);
             loaderData.loadTickers(this);
         }
+
+        // Start the controller
+        mViewController = new MainViewController(this);
+
+        // Create and initialize BillingManager which talks to BillingLibrary
+        mBillingManager = new BillingManager(this, mViewController.getUpdateListener());
+
+        // Try to restore dialog fragment if we were showing it prior to screen rotation
+        if (savedInstanceState != null) {
+            mAcquireFragment = (AcquireFragment) getSupportFragmentManager()
+                    .findFragmentByTag(DIALOG_TAG_ACQUIRE);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         loaderData.deleteObserver(this);
+        if (mBillingManager != null) {
+            mBillingManager.destroy();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (mBillingManager != null
+                && mBillingManager.getBillingClientResponseCode() == BillingResponse.OK) {
+            mBillingManager.queryPurchases();
+        }
+
         if (Session.getInstance().getPasswordValue().isEmpty())
             startActivity(new Intent(this, PinActivity.class));
     }
 
+    @Override
+    public void onRefresh() {
+        loaderData.loadTickers(this);
+    }
+
+    public void setPrivateApiPaid() {
+        Session.getInstance().setPrivateApiPaid(true);
+    }
 
     private void prepareList() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -175,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        //menu.findItem(R.id.action_accounts).setVisible(Session.getInstance().isPrivateApiPaid());
+        menu.findItem(R.id.action_subscription).setVisible(!mViewController.isUnlimited());
         return true;
     }
 
@@ -192,15 +235,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             startActivity(intent);
         }
 
+        if (id == R.id.action_subscription) {
+            onPurchaseMenuClicked();
+        }
+
         if (id == R.id.action_accounts) {
             if (Session.getInstance().isPrivateApiAvailable()) {
                 Intent intent = new Intent(getBaseContext(), UserInfoActivity.class);
                 startActivity(intent);
-            }
-            else if (!Session.getInstance().isPrivateApiPaid()) {
+            } else if (!Session.getInstance().isPrivateApiPaid()) {
                 String[] messageArray = {
                         getString(R.string.private_api_account),
-                        getString(R.string.private_api_activation_setting)
+                        getString(R.string.private_api_activation_menu) + " \"" +
+                        getString(R.string.action_subscription) + "\""
                 };
                 AlertDialog.Builder builder;
                 builder = new AlertDialog.Builder(this);
@@ -215,8 +262,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         });
                 builder.create();
                 builder.show();
-            }
-            else if (!Session.getInstance().isCorrectKeys()) {
+            } else if (!Session.getInstance().isCorrectKeys()) {
                 String[] messageArray = {
                         getString(R.string.private_api_incorrect_key),
                 };
@@ -260,11 +306,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void onRefresh() {
-        loaderData.loadTickers(this);
-    }
-
-    @Override
     public void update(Observable observable, Object o) {
         if (o instanceof Pair) {
             String keyName = (String) ((Pair) o).first;
@@ -286,4 +327,90 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             swipeRefreshLayout.setRefreshing(false);
         }
     }
+
+
+    public void showRefreshedUi() {
+        //setWaitScreen(false);
+        if (mAcquireFragment != null) {
+            mAcquireFragment.refreshUI();
+        }
+    }
+
+    @Override
+    public BillingManager getBillingManager() {
+        return mBillingManager;
+    }
+
+    @Override
+    public boolean isDayPurchased() {
+        return mViewController.isDayPurchased();
+    }
+
+    @Override
+    public boolean isUnlimitedPurchased() {
+        return mViewController.isUnlimited();
+    }
+
+    @Override
+    public boolean isWeekSubscribed() {
+        return mViewController.isWeekSubscribed();
+    }
+
+    @Override
+    public boolean isOneMonthSubscribed() {
+        return mViewController.isOneMonthSubscribed();
+    }
+
+    @Override
+    public boolean isThreeMonthsSubscribed() {
+        return mViewController.isThreeMontsSubscribed();
+    }
+
+    @Override
+    public boolean isSixMonthsSubscribed() {
+        return mViewController.isSixMonthsSubscribed();
+    }
+
+    @Override
+    public boolean isYearSubscribed() {
+        return mViewController.isYearSubscribed();
+    }
+
+    @Override
+    public String getSubscriptionSkuId() {
+        return mViewController.getSubscriptionSkuId();
+    }
+
+    public void onBillingManagerSetupFinished() {
+        if (mAcquireFragment != null) {
+            mAcquireFragment.onManagerReady(this);
+        }
+    }
+
+    public boolean isAcquireFragmentShown() {
+        return mAcquireFragment != null && mAcquireFragment.isVisible();
+    }
+
+    public DialogFragment getDialogFragment() {
+        return mAcquireFragment;
+    }
+
+    public void onPurchaseMenuClicked() {
+        Log.d(TAG, "Purchase button clicked.");
+
+        if (mAcquireFragment == null) {
+            mAcquireFragment = new AcquireFragment();
+        }
+
+        if (!isAcquireFragmentShown()) {
+            mAcquireFragment.show(getSupportFragmentManager(), DIALOG_TAG_ACQUIRE);
+
+            if (mBillingManager != null
+                    && mBillingManager.getBillingClientResponseCode()
+                    > BILLING_MANAGER_NOT_INITIALIZED) {
+                mAcquireFragment.onManagerReady(this);
+            }
+        }
+    }
+
 }
