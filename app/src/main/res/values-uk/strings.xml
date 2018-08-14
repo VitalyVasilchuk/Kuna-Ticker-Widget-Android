@@ -23,8 +23,8 @@
     <string name="empty_balance_hide">пусті баланси приховані</string>
     <string name="delete_entry">видалення ордера</string>
     <string name="confirm_delete_order">Ви дійсно хочете видалити цей запис:</string>
-    <string name="confirmation_order_amount">за ціною</string>
-    <string name="confirmation_order_price">на суму</string>
+    <string name="confirmation_order_price">за ціною</string>
+    <string name="confirmation_order_amount">на суму</string>
     <string name="label_sell">ПРОДАТИ</string>
     <string name="label_buy">КУПИТИ</string>
     <string name="label_available">Доступно</string>
@@ -94,6 +94,21 @@
     <string name="key_private_api_summary">Торкніться, щоб активувати.</string>
     <string name="private_api_activation_setting">Підключення можна виконати в налаштуваннях в розділі \"API токени\"</string>
     <string name="private_api_activated">Функції активовані до закінчення пробного періоду</string>
+    <string name="button_buy">Придбати</string>
+    <string name="title_purchase">Придбання</string>
+    <string name="private_api_purchase">Придбання</string>
+    <string name="button_own">придбано</string>
+    <string name="alert_already_purchased">Вже придбано</string>
+    <string name="day_purchased">day purchased</string>
+    <string name="button_change">Змінити</string>
+    <string name="error_no_skus">Ми не знайшли жодного SKU для показу. Перевірте підключення до Інтернету та перевірте правильність налаштування консолі розробника Google.</string>
+    <string name="error_billing_unavailable">Платіж недоступний. Переконайтеся, що ваш додаток Google Play налаштовано правильно.</string>
+    <string name="error_billing_default">Платіж недоступний. Будь ласка, перевірте свій пристрій.</string>
+    <string name="header_inapp">Разові угоди</string>
+    <string name="header_subscriptions">Підписки</string>
+    <string name="button_subscription_own">діє</string>
+    <string name="action_subscription">Підписка</string>
+    <string name="private_api_activation_menu">Активувати можна обравши пункт меню</string>
     <string-array name="observer_frequency">
         <item>кожні 5 хвилин</item>
         <item>кожні 10 хвилин</item>

@@ -23,8 +23,8 @@
     <string name="empty_balance_hide">пустые балансы скрыты</string>
     <string name="delete_entry">Удаление ордера</string>
     <string name="confirm_delete_order">Вы действительно хотите удалить эту запись:</string>
-    <string name="confirmation_order_amount">на сумму</string>
     <string name="confirmation_order_price">по цене</string>
+    <string name="confirmation_order_amount">на сумму</string>
     <string name="label_sell">ПРОДАТЬ</string>
     <string name="label_buy">КУПИТЬ</string>
     <string name="label_available">Доступно</string>
@@ -94,6 +94,21 @@
     <string name="key_private_api_summary">Коснитесь, чтобы активировать.</string>
     <string name="private_api_activation_setting">Подключение можно выполнить в настройках в разделе \"API токены\"</string>
     <string name="private_api_activated">Функции активированы до окончания пробного периода</string>
+    <string name="button_buy">Оплатить</string>
+    <string name="title_purchase">Приватный API</string>
+    <string name="private_api_purchase">Покупка</string>
+    <string name="button_own">приобретен</string>
+    <string name="alert_already_purchased">Уже приобретен</string>
+    <string name="day_purchased">day purchased</string>
+    <string name="button_change">Изменить</string>
+    <string name="error_no_skus">Мы не нашли никаких SKU для отображения. Проверьте подключение к Интернету и убедитесь, что ваша консоль разработчика Google установлена правильно.</string>
+    <string name="error_billing_unavailable">Платеж недоступен. Убедитесь, что приложение Google Play настроено правильно.</string>
+    <string name="error_billing_default">Платеж недоступен. Проверьте свое устройство.</string>
+    <string name="header_inapp">Разовые сделки</string>
+    <string name="header_subscriptions">Подписки</string>
+    <string name="button_subscription_own">действует</string>
+    <string name="action_subscription">Подписка</string>
+    <string name="private_api_activation_menu">Подключение можно выполнить выбрав пункт меню</string>
     <string-array name="observer_frequency">
         <item>каждые 5 минут</item>
         <item>каждые 10 минут</item>

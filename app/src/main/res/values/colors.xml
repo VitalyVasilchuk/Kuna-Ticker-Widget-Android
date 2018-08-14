@@ -12,4 +12,9 @@
 
     <color name="color_ask">#ea4d5c</color>
     <color name="color_bid">#53b886</color>
+
+    <color name="row_bg_color">#ffffff</color>
+    <color name="row_header_bg_color">#ffffff</color>
+    <color name="list_bg_color">#eeeeee</color>
+
 </resources>
