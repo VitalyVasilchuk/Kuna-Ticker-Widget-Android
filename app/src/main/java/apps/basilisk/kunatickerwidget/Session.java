@@ -5,10 +5,6 @@ import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import apps.basilisk.kunatickerwidget.activity.SettingsActivity;
 import apps.basilisk.kunatickerwidget.api.NbuService;
 import apps.basilisk.kunatickerwidget.entity.RateNbu;
@@ -66,8 +62,6 @@ public class Session {
             }
         });
 
-        // проверка приобретиния подписки, продукта или наличие доступного пробного периода
-        checkPrivateApiPaid();
     }
 
     public static void initInstance() {
@@ -137,6 +131,7 @@ public class Session {
 
     public void setPrivateApiPaid(boolean privateApiPaid) {
         this.privateApiPaid = privateApiPaid;
+        Log.d(TAG, "privateApiPaid = " + this.privateApiPaid);
     }
 
     public boolean isCorrectKeys() {
@@ -149,6 +144,7 @@ public class Session {
         return Session.getInstance().isCorrectKeys() && Session.getInstance().isPrivateApiPaid();
     }
 
+/*
     public String checkPrivateApiPaid() {
         boolean result = false;
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
@@ -156,14 +152,15 @@ public class Session {
         if (!stringTrial.isEmpty()) {
             Date dateTrial, today;
             try {
-                dateTrial = new SimpleDateFormat("dd/MM/yyyyy HH:mm:ss").parse(stringTrial);
+                dateTrial = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(stringTrial);
                 today = new Date();
                 result = !today.after(dateTrial);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-        setPrivateApiPaid(result);
+        this.privateApiPaid = result;
         return stringTrial;
     }
+*/
 }
