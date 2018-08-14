@@ -40,19 +40,11 @@ public class DetailActivity extends AppCompatActivity {
     private static final String TAG = "DetailActivity";
     private static final int REQUEST_CODE_NEW_ORDER = 1;
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+    public static final String ARG_CURRENCY_TRADE = "currencyTrade";
+    public static final String ARG_CURRENCY_BASE = "currencyBase";
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
     private FloatingActionButton fab;
     private byte touchCounter;
@@ -84,7 +76,7 @@ public class DetailActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),
-                itemMap.get("market"), Session.getInstance().isPrivateApiPaid());
+                itemMap, Session.getInstance().isPrivateApiPaid());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -150,7 +142,8 @@ public class DetailActivity extends AppCompatActivity {
                 } else if (!Session.getInstance().isPrivateApiPaid()) {
                     String[] messageArray = {
                             getString(R.string.private_api_order),
-                            getString(R.string.private_api_activation_setting)
+                            getString(R.string.private_api_activation_menu) + " \"" +
+                                    getString(R.string.action_subscription) + "\""
                     };
                     AlertDialog.Builder builder;
                     builder = new AlertDialog.Builder(DetailActivity.this);
@@ -248,14 +241,16 @@ public class DetailActivity extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private static final String ARG_MARKET = "market";
         String[] nameTabs = {getString(R.string.tab_buy), getString(R.string.tab_sell), getString(R.string.tab_trades), getString(R.string.tab_orders), getString(R.string.tab_deals)};
         String market;
+        String currencyTrade;
+        String currencyBase;
         boolean privateApi;
 
-        public SectionsPagerAdapter(FragmentManager fm, String market, boolean privateApi) {
+        public SectionsPagerAdapter(FragmentManager fm, HashMap<String, String> itemMap, boolean privateApi) {
             super(fm);
-            this.market = market;
+            this.currencyTrade = itemMap.get(ARG_CURRENCY_TRADE);
+            this.currencyBase = itemMap.get(ARG_CURRENCY_BASE);
             this.privateApi = privateApi;
         }
 
@@ -280,7 +275,8 @@ public class DetailActivity extends AppCompatActivity {
                     break;
             }
             Bundle args = new Bundle();
-            args.putString(ARG_MARKET, market);
+            args.putString(ARG_CURRENCY_TRADE, currencyTrade);
+            args.putString(ARG_CURRENCY_BASE, currencyBase);
             fragment.setArguments(args);
             return fragment;
         }
