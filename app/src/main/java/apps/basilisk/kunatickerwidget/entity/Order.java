@@ -3,6 +3,8 @@ package apps.basilisk.kunatickerwidget.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
+
 public class Order {
 
     @SerializedName("id")
@@ -139,7 +141,7 @@ public class Order {
     }
 
     public String getFunds() {
-        return String.valueOf(Float.parseFloat(price) * Float.parseFloat(volume));
+        return (new BigDecimal(price)).multiply(new BigDecimal(remainingVolume)).toPlainString();
     }
 
     @Override
