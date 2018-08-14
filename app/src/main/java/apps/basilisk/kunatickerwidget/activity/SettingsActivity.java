@@ -24,16 +24,11 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.view.MenuItem;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import apps.basilisk.kunatickerwidget.R;
 import apps.basilisk.kunatickerwidget.Session;
 import apps.basilisk.kunatickerwidget.tools.Enigma;
-
-import static apps.basilisk.kunatickerwidget.Session.APP_PREF_TRIAL_DATE_END;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -316,7 +311,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Preference textPublicKey;
         Preference textPrivateKey;
         Preference keyRemoval;
-        Preference keyPrivateApi;
         Preference preference;
 
         @Override
@@ -338,15 +332,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             keyRemoval = findPreference(APP_PREF_KEY_REMOVAL);
             keyRemoval.setOnPreferenceClickListener(this);
-
-            keyPrivateApi = findPreference(APP_PREF_KEY_PRIVATE_API);
-            keyPrivateApi.setOnPreferenceClickListener(this);
-
-            String stringTrial = Session.getInstance().checkPrivateApiPaid();
-            keyPrivateApi.setEnabled(stringTrial.isEmpty());
-            if (Session.getInstance().isPrivateApiPaid() && !stringTrial.isEmpty())
-                keyPrivateApi.setSummary(getString(R.string.private_api_activated) + " (" + stringTrial + ").");
-
         }
 
         @Override
@@ -386,22 +371,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                             })
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
-                    break;
-
-                case APP_PREF_KEY_PRIVATE_API:
-                    Session.getInstance().setPrivateApiPaid(true);
-                    Date dateTrial = new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(30));
-                    String stringTrial = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(dateTrial);
-
-                    keyPrivateApi.setSummary(getString(R.string.private_api_activated) +
-                            " ("+ stringTrial +").");
-
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                    sharedPref.edit().putString(APP_PREF_TRIAL_DATE_END, stringTrial).apply();
-
-                    textPublicKey.setEnabled(Session.getInstance().isPrivateApiPaid());
-                    textPrivateKey.setEnabled(Session.getInstance().isPrivateApiPaid());
-                    keyPrivateApi.setEnabled(false);
                     break;
 
                 default:
