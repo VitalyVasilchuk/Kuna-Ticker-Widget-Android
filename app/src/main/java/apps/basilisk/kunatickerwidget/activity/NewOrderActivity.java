@@ -242,7 +242,7 @@ public class NewOrderActivity extends AppCompatActivity implements View.OnClickL
                             operation + " " +
                             volume + " " + currencyTrade + "\n" +
                             getString(R.string.confirmation_order_price) + " " + price + " " + currencyBase + "\n" +
-                            getString(R.string.confirmation_order_amount) + " " + sum + " " + currencyTrade;
+                            getString(R.string.confirmation_order_amount) + " " + sum + " " + currencyBase;
 
                     // вывод подтверждающего диалога
                     AlertDialog.Builder builder;
