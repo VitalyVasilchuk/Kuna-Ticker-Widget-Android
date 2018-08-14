@@ -31,6 +31,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import apps.basilisk.kunatickerwidget.BuildConfig;
+import apps.basilisk.kunatickerwidget.activity.DetailActivity;
 import apps.basilisk.kunatickerwidget.tools.LoaderData;
 import apps.basilisk.kunatickerwidget.R;
 import apps.basilisk.kunatickerwidget.tools.Utils;
@@ -38,9 +39,11 @@ import apps.basilisk.kunatickerwidget.entity.Order;
 
 public class OrdersFragment extends Fragment implements Observer {
     private static final String TAG = "OrdersFragment";
-    private static final String ARG_MARKET = "market";
+
     private static final String LIST_DATA = "listData";
 
+    private static String currencyTrade;
+    private static String currencyBase;
     private static String market;
 
     private ArrayList<HashMap<String, String>> listData;
@@ -55,7 +58,12 @@ public class OrdersFragment extends Fragment implements Observer {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        market = getArguments().getString(ARG_MARKET).replace("/", "");
+
+        Bundle bundle = getArguments();
+        currencyTrade = bundle.getString(DetailActivity.ARG_CURRENCY_TRADE);
+        currencyBase = bundle.getString(DetailActivity.ARG_CURRENCY_BASE);
+        market = currencyTrade + currencyBase;
+
         listData = new ArrayList<>();
 
         // объявление загрузчика
@@ -129,15 +137,16 @@ public class OrdersFragment extends Fragment implements Observer {
                             TextView textVolume = parentRow.findViewById(R.id.text_volume);
                             TextView textFunds = parentRow.findViewById(R.id.text_funds);
 
-                            String currencyTrade = "";
-                            String currencyBase = "";
+                            String operation = textSide.getText().toString().equalsIgnoreCase("buy") ?
+                                    getString(R.string.confirmation_order_operation_buy) :
+                                    getString(R.string.confirmation_order_operation_sell);
 
                             String confirmationText = "" + getString(R.string.confirm_delete_order) + "\n" +
                                     "ID " + textId.getText().toString() + "\n" +
-                                    textSide.getText().toString() + " " +
-                                    textVolume.getText().toString() + " " + currencyTrade + "\n" +
-                                    getString(R.string.confirmation_order_price) + " " + textPrice.getText().toString() + " " + currencyBase + "\n" +
-                                    getString(R.string.confirmation_order_amount) + " " + textFunds.getText().toString() + " " + currencyBase;
+                                    operation + " " +
+                                    textVolume.getText().toString() + " " + currencyTrade.toUpperCase() + "\n" +
+                                    getString(R.string.confirmation_order_price) + " " + textPrice.getText().toString() + " " + currencyBase.toUpperCase() + "\n" +
+                                    getString(R.string.confirmation_order_amount) + " " + textFunds.getText().toString() + " " + currencyBase.toUpperCase();
 
                             deletedEntryId = textId.getText().toString();
 
@@ -212,7 +221,8 @@ public class OrdersFragment extends Fragment implements Observer {
                             hashMap.put("date", dateOperation);
                             hashMap.put("time", timeOperation);
                             hashMap.put("price", Utils.getFormattedValue(order.getPrice()));
-                            hashMap.put("volume", Utils.getFormattedValue(order.getVolume()));
+                            //hashMap.put("volume", Utils.getFormattedValue(order.getVolume()));
+                            hashMap.put("volume", Utils.getFormattedValue(order.getRemainingVolume()));
                             hashMap.put("funds", Utils.getFormattedValue(order.getFunds()));
                             listData.add(0, hashMap);
                         }

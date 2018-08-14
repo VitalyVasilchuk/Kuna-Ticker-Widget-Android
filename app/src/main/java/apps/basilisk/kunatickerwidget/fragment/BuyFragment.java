@@ -25,15 +25,17 @@ import java.util.Observer;
 
 import apps.basilisk.kunatickerwidget.BuildConfig;
 import apps.basilisk.kunatickerwidget.R;
+import apps.basilisk.kunatickerwidget.activity.DetailActivity;
 import apps.basilisk.kunatickerwidget.entity.OfferList;
 import apps.basilisk.kunatickerwidget.tools.LoaderData;
 import apps.basilisk.kunatickerwidget.tools.Utils;
 
 public class BuyFragment extends Fragment implements Observer {
     private static final String TAG = "BuyFragment";
-    private static final String ARG_MARKET = "market";
     private static final String LIST_DATA = "listData";
 
+    private static String currencyTrade;
+    private static String currencyBase;
     private static String market;
 
     private ArrayList<HashMap<String, String>> listData;
@@ -47,7 +49,12 @@ public class BuyFragment extends Fragment implements Observer {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        market = getArguments().getString(ARG_MARKET).replace("/", "");
+
+        Bundle bundle = getArguments();
+        currencyTrade = bundle.getString(DetailActivity.ARG_CURRENCY_TRADE);
+        currencyBase = bundle.getString(DetailActivity.ARG_CURRENCY_BASE);
+        market = currencyTrade + currencyBase;
+
         listData = new ArrayList<>();
 
         // объявление загрузчика
