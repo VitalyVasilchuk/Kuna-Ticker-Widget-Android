@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+<!--
     <Preference
         android:defaultValue="@string/value_not_specified"
         android:key="key_private_api"
         android:selectAllOnFocus="true"
         android:summary="@string/key_private_api_summary"
         android:title="@string/private_api" />
+-->
 
     <Preference
         android:defaultValue="@string/value_not_specified"
