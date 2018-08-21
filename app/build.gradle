@@ -28,8 +28,8 @@ android {
         applicationId "apps.basilisk.kunatickerwidget"
         minSdkVersion 18
         targetSdkVersion 27
-        versionCode 4
-        versionName "0.5.$versionCode.$versionBuild"
+        versionCode 6
+        versionName "0.7.$versionCode.$versionBuild"
         setProperty("archivesBaseName", "basilisk-kunatickerwidget-$versionName")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -43,6 +43,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    signingConfigs {
+        debug {
+            if(project.hasProperty("signing_configs.properties")
+                    && new File(project.property("signing_configs.properties")).exists()) {
+                Properties props = new Properties()
+                props.load(new FileInputStream(file(project.property("signing_configs.properties"))))
+
+                storeFile file(props['keystore'])
+                storePassword props['keystore.password']
+                keyAlias props['key.alias']
+                keyPassword props['key.password']
+            }
+        }
+    }
+
     // Hook to check if the release/debug task is among the tasks to be executed.
     gradle.taskGraph.whenReady { taskGraph ->
         if (taskGraph.hasTask(assembleDebug)) {  /* when run debug task */
@@ -74,4 +89,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+
+    implementation 'com.android.billingclient:billing:1.0'
 }
