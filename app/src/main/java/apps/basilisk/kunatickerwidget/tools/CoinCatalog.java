@@ -23,6 +23,7 @@ public class CoinCatalog {
         listCoins.add(new Coin("etc", "ETHEREUM-CLASSIC", R.drawable.icon_coin_etc));
         listCoins.add(new Coin("eth", "ETHEREUM", R.drawable.icon_coin_eth));
         listCoins.add(new Coin("evr", "EVERUS", R.drawable.icon_coin_evr));
+        listCoins.add(new Coin("eurs", "STASIS EURS", R.drawable.icon_coin_eurs));
         listCoins.add(new Coin("fno", "FONERO", R.drawable.icon_coin_fno));
         listCoins.add(new Coin("food", "FOOD", R.drawable.icon_coin_food));
         listCoins.add(new Coin("gbg", "GOLOS-GOLD", R.drawable.icon_coin_gbg));
