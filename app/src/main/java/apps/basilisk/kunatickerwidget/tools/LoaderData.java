@@ -65,10 +65,13 @@ public class LoaderData extends Observable {
         try {
             Gson gson = new Gson();
             String errorString = response.errorBody().string();
-            if (errorString != null && !errorString.isEmpty()) {
+            if (errorString != null &&
+                    errorString.contains("error") &&
+                    errorString.contains("code") &&
+                    errorString.contains("message")) {
                 ErrorMessage errorMessage = gson.fromJson(errorString, ErrorMessage.class);
                 if (errorMessage != null)
-                    message += "\n(" + errorMessage.getError().getMessage() + " (" + errorMessage.getError().getCode() + "))"; // API error
+                    message += String.format("\n(%s (%s))", errorMessage.getError().getMessage(), errorMessage.getError().getCode()); // API error
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -258,7 +261,11 @@ public class LoaderData extends Observable {
                 tickerNew.setTimestamp(entry.getValue().getAt());
                 // определение валютной пары
                 currencyPair = entry.getKey();
-                if (currencyPair.length() > 3) {
+                if (currencyPair.equalsIgnoreCase("btceurs")) {
+                    currencyTrade = currencyPair.substring(0, currencyPair.length() - 4);
+                    currencyBase = currencyPair.substring(currencyTrade.length());
+                }
+                else if (currencyPair.length() > 3) {
                     currencyTrade = currencyPair.substring(0, currencyPair.length() - 3);
                     currencyBase = currencyPair.substring(currencyTrade.length());
                 }
