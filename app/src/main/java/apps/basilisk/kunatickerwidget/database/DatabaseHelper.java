@@ -8,7 +8,7 @@ import apps.basilisk.kunatickerwidget.entity.Ticker;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "appstore.db"; // название БД
-    private static final int SCHEMA = 1; // версия базы данных
+    private static final int SCHEMA = 2; // версия базы данных
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, SCHEMA);
