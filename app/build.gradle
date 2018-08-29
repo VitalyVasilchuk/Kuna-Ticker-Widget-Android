@@ -28,7 +28,7 @@ android {
         applicationId "apps.basilisk.kunatickerwidget"
         minSdkVersion 18
         targetSdkVersion 27
-        versionCode 6
+        versionCode 7
         versionName "0.7.$versionCode.$versionBuild"
         setProperty("archivesBaseName", "basilisk-kunatickerwidget-$versionName")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -89,6 +89,5 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
-
     implementation 'com.android.billingclient:billing:1.0'
 }
